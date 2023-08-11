@@ -1,0 +1,3 @@
+[General]
+name=Navigation
+description=A navigation robot that need to go from an origin position to a goal position while traversing a terrain with deceleration zones

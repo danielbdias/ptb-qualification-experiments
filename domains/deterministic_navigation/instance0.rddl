@@ -1,0 +1,35 @@
+non-fluents Navigation2D-NoZones {
+    domain = Navigation;
+
+    objects {
+        dim: {x, y};
+        zone: {z1};
+    };
+
+    non-fluents {
+        GOAL(x) = 10.0;
+        GOAL(y) = 10.0;
+
+        DECELERATION_ZONE_CENTER(z1, x) = 5.0;
+        DECELERATION_ZONE_CENTER(z1, y) = 4.5;
+        DECELERATION_ZONE_DECAY(z1) = 1.15;
+        DECELERATION_ZONE_CORRELATION(z1, x, x) = 1.0;
+        DECELERATION_ZONE_CORRELATION(z1, x, y) = 0.0;
+        DECELERATION_ZONE_CORRELATION(z1, y, x) = 0.0;
+        DECELERATION_ZONE_CORRELATION(z1, y, y) = 1.0;
+    };
+}
+
+instance inst1 {
+    domain = Navigation;
+    non-fluents = Navigation2D-NoZones;
+
+    init-state {
+        location(x) = 1.0;
+        location(y) = 1.0;
+    };
+
+    max-nondef-actions = 2;
+    horizon = 20;
+    discount = 1.0;
+}

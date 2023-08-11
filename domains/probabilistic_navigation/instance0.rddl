@@ -1,0 +1,31 @@
+non-fluents Navigation2D-Small-2Zones {
+    domain = Navigation;
+
+    objects {
+        dim: {x, y};
+        zone: {z1};
+    };
+
+    non-fluents {
+        GOAL(x) = 10.0;
+        GOAL(y) = 10.0;
+
+        DECELERATION_ZONE_CENTER(z1, x) = 5.0;
+        DECELERATION_ZONE_CENTER(z1, y) = 5.5;
+        DECELERATION_ZONE_DECAY(z1) = 1.15;
+    };
+}
+
+instance inst_small_2zones {
+    domain = Navigation;
+    non-fluents = Navigation2D-Small-2Zones;
+
+    init-state {
+        location(x) = 1.0;
+        location(y) = 1.0;
+    };
+
+    max-nondef-actions = 2;
+    horizon = 20;
+    discount = 1.0;
+}

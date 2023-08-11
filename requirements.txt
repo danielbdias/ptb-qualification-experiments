@@ -1,0 +1,11 @@
+dm-haiku>=0.0.9
+gym>=0.24.0
+jax>=0.3.25
+matplotlib>=3.5.0
+numpy>=1.22
+optax>=0.1.4
+pillow>=9.2.0
+ply
+pygame
+tensorflow-probability>=0.19.0
+tensorflow>=2.11.0
