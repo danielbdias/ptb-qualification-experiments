@@ -16,6 +16,7 @@ class PlannerParameters:
     epochs:                     int
     seed:                       jax.random.KeyArray
     report_statistics_interval: int
+    action_bounds:              dict
 
 @dataclass(frozen=True)
 class ExperimentStatistics:
@@ -79,7 +80,8 @@ def run_planner(environment, planner_parameters):
         batch_size_train=planner_parameters.batch_size_train,
         plan=planner_parameters.plan,
         optimizer=planner_parameters.optimizer,
-        optimizer_kwargs={'learning_rate': planner_parameters.learning_rate})
+        optimizer_kwargs={'learning_rate': planner_parameters.learning_rate},
+        action_bounds=planner_parameters.action_bounds)
 
     # run the planner as an optimization process
     planner_callbacks = planner.optimize(

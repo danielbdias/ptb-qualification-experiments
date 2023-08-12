@@ -25,6 +25,7 @@ deterministic_planner_parameters = PlannerParameters(
     learning_rate=0.1,
     epochs=1000,
     seed=jax.random.PRNGKey(42),
+    action_bounds={'move':(-1.0, 1.0)},
     report_statistics_interval=10
 )
 
@@ -44,6 +45,7 @@ probabilistic_planner_parameters = PlannerParameters(
     learning_rate=0.1,
     epochs=1000,
     seed=jax.random.PRNGKey(42),
+    action_bounds={'move':(-1.0, 1.0)},
     report_statistics_interval=10
 )
 

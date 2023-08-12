@@ -18,7 +18,7 @@
             "name": "Python: No Heuristic Planner",
             "type": "python",
             "request": "launch",
-            "program": "/Users/danielbdias/Development/Repositories/studies/doctorate/experiments/planning-through-backpropagation/experiments/no_heuristic.py",
+            "program": "/Users/danielbdias/Development/Repositories/studies/doctorate/experiments/planning-through-backpropagation/experiments/no_heuristic_drp.py",
             "console": "integratedTerminal",
             // "justMyCode": true,
             "justMyCode": false,

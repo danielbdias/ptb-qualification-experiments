@@ -41,8 +41,6 @@ domain Navigation {
                 ]
             ]
         ];
-
-        // distance(?z) = sqrt[ sum_{?l:dim} [ pow[ (DECELERATION_ZONE_CENTER(?z, ?l) - location(?l)), 2 ] ] ];
         deceleration(?z) = 2.0 / (1.0 + exp[-DECELERATION_ZONE_DECAY(?z) * distance(?z) ]) - 1.00;
         location'(?l) = location(?l) + (prod_{?z:zone} [deceleration(?z)]) * move(?l);
     };
