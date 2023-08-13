@@ -5,13 +5,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 print('--------------------------------------------------------------------------------')
-print('Generating graphs for Straight line Plan')
+print('Generating graphs for DRP')
 print('--------------------------------------------------------------------------------')
 print()
 
 root_folder = os.path.dirname(__file__)
-no_heuristic_stats_file = f'{root_folder}/zzz_probabilistic_no_heuristic_straightline_statistics.pickle'
-heuristic_stats_file = f'{root_folder}/zzz_probabilistic_with_heuristic_straightline_statistics.pickle'
+no_heuristic_stats_file = f'{root_folder}/zzz_probabilistic_no_heuristic_deepreactive_statistics.pickle'
+heuristic_stats_file = f'{root_folder}/zzz_probabilistic_with_heuristic_deepreactive_statistics.pickle'
 
 no_heuristic_stats = load_data(no_heuristic_stats_file)
 
@@ -34,8 +34,8 @@ plt.plot(heuristic_iterations, heuristic_train_returns, label="Heuristic (Train)
 # plt.fill_between(train_sizes, train_mean - train_std, train_mean + train_std, color="#DDDDDD")
 # plt.fill_between(train_sizes, test_mean - test_std, test_mean + test_std, color="#DDDDDD")
 
-plt.title("Learning Curve - Straight line Plan")
+plt.title("Learning Curve - DRP")
 plt.xlabel("Iterations"), plt.ylabel("Costs"), plt.legend(loc="best")
 plt.tight_layout()
 
-plt.savefig(f'{root_folder}/zzz_graph_straightline.png', format='png')
+plt.savefig(f'{root_folder}/zzz_graph_drp.png', format='png')

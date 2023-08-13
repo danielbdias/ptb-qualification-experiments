@@ -1,4 +1,4 @@
-non-fluents Navigation2D-NoZones {
+non-fluents Navigation2D-Small-2Zones {
     domain = Navigation;
 
     objects {
@@ -13,16 +13,12 @@ non-fluents Navigation2D-NoZones {
         DECELERATION_ZONE_CENTER(z1, x) = 5.0;
         DECELERATION_ZONE_CENTER(z1, y) = 4.5;
         DECELERATION_ZONE_DECAY(z1) = 1.15;
-        DECELERATION_ZONE_CORRELATION(z1, x, x) = 1.0;
-        DECELERATION_ZONE_CORRELATION(z1, x, y) = 0.0;
-        DECELERATION_ZONE_CORRELATION(z1, y, x) = 0.0;
-        DECELERATION_ZONE_CORRELATION(z1, y, y) = 1.0;
     };
 }
 
-instance inst1 {
+instance inst_small_2zones {
     domain = Navigation;
-    non-fluents = Navigation2D-NoZones;
+    non-fluents = Navigation2D-Small-2Zones;
 
     init-state {
         location(x) = 1.0;
