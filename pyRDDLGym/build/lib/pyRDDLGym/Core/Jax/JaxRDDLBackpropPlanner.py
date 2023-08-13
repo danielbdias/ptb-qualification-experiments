@@ -566,7 +566,7 @@ class JaxDeepReactivePolicy(JaxPlan):
                  activation: Callable=jax.nn.relu,
                  initializer: hk.initializers.Initializer=hk.initializers.VarianceScaling(scale=2.0),
                  normalize: bool=True,
-                 initializer_per_layer: dict=None) -> None:
+                 weights_per_layer: dict=None) -> None:
         '''Creates a new deep reactive policy in JAX.
         
         :param neurons: sequence consisting of the number of neurons in each
@@ -580,7 +580,7 @@ class JaxDeepReactivePolicy(JaxPlan):
         self._activations = [activation for _ in topology]
         self._initializer = initializer
         self._normalize = normalize
-        self._initializer_per_layer = initializer_per_layer
+        self._weights_per_layer = weights_per_layer
         
     def compile(self, compiled: JaxRDDLCompilerWithGrad,
                 _bounds: Dict, horizon: int) -> None:
@@ -637,9 +637,9 @@ class JaxDeepReactivePolicy(JaxPlan):
                     'name': layer_name
                 }                
 
-                if self._initializer_per_layer is not None:
-                    layer_args['w_init'] = hk.initializers.Constant(self._initializer_per_layer[layer_name]['w'])
-                    layer_args['b_init'] = hk.initializers.Constant(self._initializer_per_layer[layer_name]['b'])
+                if self._weights_per_layer is not None:
+                    layer_args['w_init'] = hk.initializers.Constant(self._weights_per_layer[layer_name]['w'])
+                    layer_args['b_init'] = hk.initializers.Constant(self._weights_per_layer[layer_name]['b'])
 
                 # linear = hk.Linear(num_neuron, name=layer_name, w_init=init)
                 linear = hk.Linear(**layer_args)                       

@@ -1,10 +1,12 @@
 from _utils import load_data
 
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-no_heuristic_stats_file = '/Users/danielbdias/Development/Repositories/studies/doctorate/experiments/planning-through-backpropagation/experiment_data/probabilistic_no_heuristic_straightline_statistics.pickle'
-heuristic_stats_file = '/Users/danielbdias/Development/Repositories/studies/doctorate/experiments/planning-through-backpropagation/experiment_data/probabilistic_with_heuristic_straightline_statistics.pickle'
+root_folder = os.path.dirname(__file__)
+no_heuristic_stats_file = f'{root_folder}/probabilistic_no_heuristic_deepreactive_statistics.pickle'
+heuristic_stats_file = f'{root_folder}/probabilistic_with_heuristic_deepreactive_statistics.pickle'
 
 no_heuristic_stats = load_data(no_heuristic_stats_file)
 
@@ -27,4 +29,4 @@ plt.title("Learning Curve - Straight line Plan")
 plt.xlabel("Iterations"), plt.ylabel("Costs"), plt.legend(loc="best")
 plt.tight_layout()
 
-plt.savefig('/Users/danielbdias/Development/Repositories/studies/doctorate/experiments/planning-through-backpropagation/experiments/graph.png', format='png')
+plt.savefig(f'{root_folder}/graph.png', format='png')
