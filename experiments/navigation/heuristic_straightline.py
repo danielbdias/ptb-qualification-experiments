@@ -6,7 +6,7 @@ import os
 from pyRDDLGym import RDDLEnv
 from pyRDDLGym.Core.Jax.JaxRDDLBackpropPlanner import JaxStraightLinePlan
 
-from _utils import run_experiment, run_planner, save_data
+from _utils import run_experiment, run_planner, save_data, save_time
 from _common_params import get_planner_params
 
 ######################################################################################################################################################
@@ -24,9 +24,10 @@ deterministic_environment = RDDLEnv.RDDLEnv(domain=deterministic_domain_file, in
 
 deterministic_planner_parameters = get_planner_params(plan=JaxStraightLinePlan())
 
-deterministic_final_policy_weights, deterministic_statistics_history = run_experiment("Deterministic - Straight line", run_planner, environment=deterministic_environment, planner_parameters=deterministic_planner_parameters)
+deterministic_final_policy_weights, deterministic_statistics_history, deterministic_experiment_time = run_experiment("Deterministic - Straight line", run_planner, environment=deterministic_environment, planner_parameters=deterministic_planner_parameters)
 save_data(deterministic_final_policy_weights, f'{root_folder}/zzz_deterministic_straightline_policy.pickle')
 save_data(deterministic_statistics_history, f'{root_folder}/zzz_deterministic_straightline_statistics.pickle')
+save_time("Deterministic - Straight line", deterministic_experiment_time, f'{root_folder}/zzz_straightline_time.csv')
 
 # Step 2 - run planner with probabilistic environment and weights from last step
 probabilistic_domain_file=f'{root_folder}/probabilistic/domain.rddl'
@@ -35,6 +36,7 @@ probabilistic_environment = RDDLEnv.RDDLEnv(domain=probabilistic_domain_file, in
 
 probabilistic_planner_parameters = get_planner_params(plan=JaxStraightLinePlan(initializer=initializers.constant(deterministic_final_policy_weights['move'])))
 
-probabilistic_final_policy_weights, probabilistic_statistics_history = run_experiment("Probabilistic + Heuristic - Straight line", run_planner, environment=probabilistic_environment, planner_parameters=probabilistic_planner_parameters)
+probabilistic_final_policy_weights, probabilistic_statistics_history, probabilistic_experiment_time = run_experiment("Probabilistic + Heuristic - Straight line", run_planner, environment=probabilistic_environment, planner_parameters=probabilistic_planner_parameters)
 save_data(probabilistic_final_policy_weights, f'{root_folder}/zzz_probabilistic_with_heuristic_straightline_policy.pickle')
 save_data(probabilistic_statistics_history, f'{root_folder}/zzz_probabilistic_with_heuristic_straightline_statistics.pickle')
+save_time("Probabilistic + Heuristic - Straight line", probabilistic_experiment_time, f'{root_folder}/zzz_straightline_time.csv')

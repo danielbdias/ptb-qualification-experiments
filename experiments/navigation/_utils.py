@@ -6,6 +6,7 @@ from pyRDDLGym.Core.Jax.JaxRDDLBackpropPlanner import JaxRDDLBackpropPlanner, Ja
 from dataclasses import dataclass
 import time
 import pickle
+import csv
 
 @dataclass(frozen=True)
 class PlannerParameters:
@@ -74,6 +75,8 @@ def run_experiment(name, experiment_action, **kwargs):
     return results
 
 def run_planner(environment, planner_parameters):
+    start_time = time.time()
+
     # initialize the planner
     planner = JaxRDDLBackpropPlanner(
         environment.model,
@@ -102,7 +105,10 @@ def run_planner(environment, planner_parameters):
         if statistics.last_callback:
             final_policy_weights = statistics.best_params
 
-    return final_policy_weights, statistics_history
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+
+    return final_policy_weights, statistics_history, elapsed_time
 
 def save_data(data, file_path):
     with open(file_path, 'wb') as handle:
@@ -111,3 +117,20 @@ def save_data(data, file_path):
 def load_data(file_path):
     with open(file_path, 'rb') as handle:
         return pickle.load(handle)
+    
+def save_time(experiment_name, time, file_path):
+    with open(file_path, 'a') as csvfile:
+        writer = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow([experiment_name, time])
+
+def load_time_csv(file_path):
+    result = {}
+
+    with open(file_path, 'r') as csvfile:
+        reader = csv.reader(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+
+        for record in reader:
+            experiment_name, time = record
+            result[experiment_name] = float(time)
+
+    return result
