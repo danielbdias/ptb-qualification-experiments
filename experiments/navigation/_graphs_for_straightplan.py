@@ -62,4 +62,4 @@ plot_learning_curve("Learning Curve - Straight line Plan", no_heuristic_stats, h
 
 time_data = load_time_csv(f'{root_folder}/zzz_straightline_time.csv')
 
-plot_time_bars("Experiment time", time_data)
+plot_time_bars("Experiment time - Straight line Plan", time_data)
