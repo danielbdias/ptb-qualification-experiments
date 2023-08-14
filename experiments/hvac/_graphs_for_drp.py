@@ -33,8 +33,8 @@ def plot_time_bars(title, time_data):
         "Heuristic",
     )
     time_sizes = {
-        "Deterministic": np.array([ 0, time_data["Deterministic - Straight line"] ]),
-        "Probabilistic": np.array([ time_data["Probabilistic (no heuristic) - Straight line"], time_data["Probabilistic + Heuristic - Straight line"] ]),
+        "Deterministic": np.array([ 0, time_data["Deterministic - DRP"] ]),
+        "Probabilistic": np.array([ time_data["Probabilistic (no heuristic) - DRP"], time_data["Probabilistic + Heuristic - DRP"] ]),
     }
     width = 0.5
 
