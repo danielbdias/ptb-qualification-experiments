@@ -1,6 +1,4 @@
 import jax.nn.initializers as initializers
-import jax
-import optax
 import os
 
 from pyRDDLGym import RDDLEnv
