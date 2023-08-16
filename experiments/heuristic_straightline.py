@@ -1,5 +1,6 @@
 import jax.nn.initializers as initializers
 import os
+import sys
 
 from pyRDDLGym import RDDLEnv
 from pyRDDLGym.Core.Jax.JaxRDDLBackpropPlanner import JaxStraightLinePlan
@@ -12,12 +13,13 @@ from _common_params import get_planner_params, HEURISTIC_STRAIGHTLINE_ACTION, JA
 ######################################################################################################################################################
 
 root_folder = os.path.dirname(__file__)
+domain_name = sys.argv[1]
 
-deterministic_domain_file=f'{root_folder}/deterministic/domain.rddl'
-deterministic_instance_file=f'{root_folder}/deterministic/instance0.rddl'
+deterministic_domain_file=f'{root_folder}/{domain_name}/deterministic/domain.rddl'
+deterministic_instance_file=f'{root_folder}/{domain_name}/deterministic/instance0.rddl'
 
-probabilistic_domain_file=f'{root_folder}/probabilistic/domain.rddl'
-probabilistic_instance_file=f'{root_folder}/probabilistic/instance0.rddl'
+probabilistic_domain_file=f'{root_folder}/{domain_name}/probabilistic/domain.rddl'
+probabilistic_instance_file=f'{root_folder}/{domain_name}/probabilistic/instance0.rddl'
 
 deterministic_experiment_stats = []
 probabilistic_experiment_stats = []
@@ -37,5 +39,5 @@ for jax_seed in JAX_SEEDS:
 
 # Save experiment statistics
 
-save_data(deterministic_experiment_stats, f'{root_folder}/zzz_heuristic_straightline_deterministic_statistics.pickle')
-save_data(probabilistic_experiment_stats, f'{root_folder}/zzz_heuristic_straightline_probabilistic_statistics.pickle')
+save_data(deterministic_experiment_stats, f'{root_folder}/zzz_{domain_name}_heuristic_straightline_deterministic_statistics.pickle')
+save_data(probabilistic_experiment_stats, f'{root_folder}/zzz_{domain_name}_heuristic_straightline_probabilistic_statistics.pickle')
