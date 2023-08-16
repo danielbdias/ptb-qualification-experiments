@@ -5,7 +5,7 @@ from pyRDDLGym import RDDLEnv
 from pyRDDLGym.Core.Jax.JaxRDDLBackpropPlanner import JaxStraightLinePlan
 
 from _utils import run_experiment, run_planner, save_data, save_time
-from _common_params import get_planner_params
+from _common_params import get_planner_params, HEURISTIC_STRAIGHTLINE_ACTION
 
 ######################################################################################################################################################
 # Script start
@@ -32,7 +32,7 @@ probabilistic_domain_file=f'{root_folder}/probabilistic/domain.rddl'
 probabilistic_instance_file=f'{root_folder}/probabilistic/instance0.rddl'
 probabilistic_environment = RDDLEnv.RDDLEnv(domain=probabilistic_domain_file, instance=probabilistic_instance_file)
 
-probabilistic_planner_parameters = get_planner_params(plan=JaxStraightLinePlan(initializer=initializers.constant(deterministic_final_policy_weights['outflow'])))
+probabilistic_planner_parameters = get_planner_params(plan=JaxStraightLinePlan(initializer=initializers.constant(deterministic_final_policy_weights[HEURISTIC_STRAIGHTLINE_ACTION])))
 
 probabilistic_final_policy_weights, probabilistic_statistics_history, probabilistic_experiment_time = run_experiment("Probabilistic + Heuristic - Straight line", run_planner, environment=probabilistic_environment, planner_parameters=probabilistic_planner_parameters)
 save_data(probabilistic_final_policy_weights, f'{root_folder}/zzz_probabilistic_with_heuristic_straightline_policy.pickle')
