@@ -58,9 +58,10 @@ class ExperimentStatisticsSummary:
     statistics_history:   list
     elapsed_time:         float
 
-def run_experiment(name, experiment_action, **kwargs):
+def run_experiment(name, environment, planner_parameters):
     print('--------------------------------------------------------------------------------')
     print('Experiment: ', name)
+    print('Seed: ', planner_parameters.seed)
     print('--------------------------------------------------------------------------------')
     print()
     
@@ -68,7 +69,7 @@ def run_experiment(name, experiment_action, **kwargs):
     start_time = time.time()
 
     # Code to be timed
-    results = experiment_action(**kwargs)
+    results = run_planner(environment, planner_parameters)
 
     # End timer
     end_time = time.time()

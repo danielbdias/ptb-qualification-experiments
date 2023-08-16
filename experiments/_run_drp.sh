@@ -8,4 +8,4 @@ echo ""
 
 PYTHONWARNINGS=ignore python ./experiments/$DOMAIN/no_heuristic_drp.py
 PYTHONWARNINGS=ignore python ./experiments/$DOMAIN/heuristic_drp.py
-PYTHONWARNINGS=ignore python ./experiments/$DOMAIN/_graphs_for_drp.py
+# PYTHONWARNINGS=ignore python ./experiments/$DOMAIN/_graphs_for_drp.py
