@@ -51,7 +51,13 @@ class ExperimentStatistics:
     def __str__(self) -> str:
         return 'step={} train_return={:.6f} test_return={:.6f} best_return={:.6f}'.format(
           str(self.iteration).rjust(4), self.train_return, self.test_return, self.best_return)
-    
+
+@dataclass(frozen=True)
+class ExperimentStatisticsSummary:
+    final_policy_weights: dict
+    statistics_history:   list
+    elapsed_time:         float
+
 def run_experiment(name, experiment_action, **kwargs):
     print('--------------------------------------------------------------------------------')
     print('Experiment: ', name)
@@ -108,7 +114,7 @@ def run_planner(environment, planner_parameters):
     end_time = time.time()
     elapsed_time = end_time - start_time
 
-    return final_policy_weights, statistics_history, elapsed_time
+    return ExperimentStatisticsSummary(final_policy_weights, statistics_history, elapsed_time)
 
 def save_data(data, file_path):
     with open(file_path, 'wb') as handle:

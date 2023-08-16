@@ -1,3 +1,7 @@
+# custom 
+zzz_*.pickle
+zzz_*.csv
+
 .DS_Store
 _venv
 *.egg-info

@@ -3,7 +3,7 @@ import optax
 
 from _utils import PlannerParameters
 
-def get_planner_params(plan, drp=False):
+def get_planner_params(plan, jax_seed, drp=False):
     learning_rate = LEARNING_RATE_STRAIGHTLINE
     if drp:
         learning_rate = LEARNING_RATE_DRP
@@ -14,7 +14,7 @@ def get_planner_params(plan, drp=False):
         optimizer=optax.rmsprop,
         learning_rate=learning_rate,
         epochs=500,
-        seed=jax.random.PRNGKey(42),
+        seed=jax.random.PRNGKey(jax_seed),
         action_bounds={'release':(0.0, 100.0)},
         report_statistics_interval=10
     )
