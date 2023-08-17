@@ -55,7 +55,7 @@ domain reservoir {
     };
     
     cpfs {
-        rainfall(?r) = (RAIN_SHAPE(?r) * RAIN_SCALE(?r)) + 2 * sqrt[RAIN_SHAPE(?r) * RAIN_SCALE(?r) * RAIN_SCALE(?r)];
+        rainfall(?r) = RAIN_SHAPE(?r) * RAIN_SCALE(?r);
         
         evaporated(?r) = MAX_WATER_EVAP_FRAC_PER_TIME_UNIT
                          *[(rlevel(?r)*rlevel(?r))/(MAX_RES_CAP(?r)*MAX_RES_CAP(?r))]
