@@ -21,4 +21,4 @@ for jax_seed in JAX_SEEDS:
     probabilistic_experiment_summary = run_experiment("Probabilistic (no heuristic) - DRP", environment=probabilistic_environment, planner_parameters=probabilistic_planner_parameters)
     probabilistic_experiment_stats.append(probabilistic_experiment_summary)
 
-save_data(probabilistic_experiment_stats, f'{root_folder}/zzz_{domain_name}_no_heuristic_deepreactive_probabilistic_statistics.pickle')
+save_data(probabilistic_experiment_stats, f'{root_folder}/_results/{domain_name}_no_heuristic_deepreactive_probabilistic_statistics.pickle')

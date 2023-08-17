@@ -38,5 +38,5 @@ for jax_seed in JAX_SEEDS:
 
 # Save experiment statistics
 
-save_data(deterministic_experiment_stats, f'{root_folder}/zzz_{domain_name}_heuristic_deepreactive_deterministic_statistics.pickle')
-save_data(probabilistic_experiment_stats, f'{root_folder}/zzz_{domain_name}_heuristic_deepreactive_probabilistic_statistics.pickle')
+save_data(deterministic_experiment_stats, f'{root_folder}/_results/{domain_name}_heuristic_deepreactive_deterministic_statistics.pickle')
+save_data(probabilistic_experiment_stats, f'{root_folder}/_results/{domain_name}_heuristic_deepreactive_probabilistic_statistics.pickle')
