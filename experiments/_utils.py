@@ -58,30 +58,14 @@ class ExperimentStatisticsSummary:
     statistics_history:   list
     elapsed_time:         float
 
-def run_experiment(name, environment, planner_parameters):
-    print('--------------------------------------------------------------------------------')
-    print('Experiment: ', name)
-    print('Seed: ', planner_parameters.seed)
-    print('--------------------------------------------------------------------------------')
-    print()
+def run_experiment(name, environment, planner_parameters, silent=True):
+    if not silent:
+        print('--------------------------------------------------------------------------------')
+        print('Experiment: ', name)
+        print('Seed: ', planner_parameters.seed)
+        print('--------------------------------------------------------------------------------')
+        print()
     
-    # Start timer
-    start_time = time.time()
-
-    # Code to be timed
-    results = run_planner(environment, planner_parameters)
-
-    # End timer
-    end_time = time.time()
-
-    # Calculate elapsed time
-    elapsed_time = end_time - start_time
-    print('Elapsed time: {} seconds'.format(elapsed_time))
-    print()
-
-    return results
-
-def run_planner(environment, planner_parameters):
     start_time = time.time()
 
     # initialize the planner
@@ -107,7 +91,8 @@ def run_planner(environment, planner_parameters):
         statistics = ExperimentStatistics.from_callback(callback, total_epochs=(planner_parameters.epochs-1))
         statistics_history.append(statistics)
 
-        print(statistics)
+        if not silent:
+            print(statistics)
 
         if statistics.last_callback:
             final_policy_weights = statistics.best_params

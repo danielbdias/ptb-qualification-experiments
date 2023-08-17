@@ -16,7 +16,7 @@ def get_planner_params(plan, jax_seed, drp=False):
         epochs=1000,
         seed=jax.random.PRNGKey(jax_seed),
         action_bounds={'move':(-1.0, 1.0)},
-        report_statistics_interval=10
+        report_statistics_interval=1
     )
 
 LEARNING_RATE_STRAIGHTLINE=0.1
