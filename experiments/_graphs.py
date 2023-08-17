@@ -94,13 +94,13 @@ plot_cost_curve_per_iteration(f'Best Costs per Iteration - Straightline ({domain
 plot_cost_curve_per_iteration(f'Train Costs per Iteration - Straightline ({domain_name})', 'Train', 'train_returns', 'straightline', no_heuristic_straightline_stats, heuristic_probabilistic_straightline_stats, lambda item : -item.train_return)
 plot_time_bars(f'Experiment time - Straightline ({domain_name})', 'straightline', no_heuristic_straightline_stats, heuristic_probabilistic_straightline_stats, heuristic_deterministic_straightline_stats)
 
-if os.path.exists(f'{root_folder}/{domain_name}_no_heuristic_deepreactive_probabilistic_statistics.pickle'):
-    no_heuristic_drp_stats = load_data(f'{root_folder}/{domain_name}_no_heuristic_deepreactive_probabilistic_statistics.pickle')
-    heuristic_deterministic_drp_stats = load_data(f'{root_folder}/{domain_name}_no_heuristic_deepreactive_deterministic_statistics.pickle')
-    heuristic_probabilistic_drp_stats = load_data(f'{root_folder}/{domain_name}_no_heuristic_deepreactive_probabilistic_statistics.pickle')
+if os.path.exists(f'{root_folder}/_results/{domain_name}_no_heuristic_deepreactive_probabilistic_statistics.pickle'):
+    no_heuristic_drp_stats = load_data(f'{root_folder}/_results/{domain_name}_no_heuristic_deepreactive_probabilistic_statistics.pickle')
+    heuristic_deterministic_drp_stats = load_data(f'{root_folder}/_results/{domain_name}_heuristic_deepreactive_deterministic_statistics.pickle')
+    heuristic_probabilistic_drp_stats = load_data(f'{root_folder}/_results/{domain_name}_heuristic_deepreactive_probabilistic_statistics.pickle')
 
-    plot_cost_curve_per_iteration(f'Best Costs per Iteration - DRP ({domain_name})', 'Best', 'best_returns', 'drp', no_heuristic_straightline_stats, heuristic_probabilistic_straightline_stats, lambda item : -item.best_return)
-    plot_cost_curve_per_iteration(f'Train Costs per Iteration - DRP ({domain_name})', 'Train', 'train_returns', 'drp', no_heuristic_straightline_stats, heuristic_probabilistic_straightline_stats, lambda item : -item.train_return)
-    plot_time_bars(f'Experiment time - DRP ({domain_name})', 'drp', no_heuristic_straightline_stats, heuristic_probabilistic_straightline_stats, heuristic_deterministic_straightline_stats)
+    plot_cost_curve_per_iteration(f'Best Costs per Iteration - DRP ({domain_name})', 'Best', 'best_returns', 'drp', no_heuristic_drp_stats, heuristic_probabilistic_drp_stats, lambda item : -item.best_return)
+    plot_cost_curve_per_iteration(f'Train Costs per Iteration - DRP ({domain_name})', 'Train', 'train_returns', 'drp', no_heuristic_drp_stats, heuristic_probabilistic_drp_stats, lambda item : -item.train_return)
+    plot_time_bars(f'Experiment time - DRP ({domain_name})', 'drp', no_heuristic_drp_stats, heuristic_probabilistic_drp_stats, heuristic_deterministic_drp_stats)
 
 print('done!')
