@@ -1,8 +1,7 @@
-
-
 from _utils import load_data, load_time_csv
 
 import os
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -52,16 +51,17 @@ def plot_time_bars(title, time_data):
     plt.savefig(f'{root_folder}/zzz_graph_time_deepreactive.png', format='png')
 
 print('--------------------------------------------------------------------------------')
-print('Generating graphs for DRP')
+print('Generating graphs')
 print('--------------------------------------------------------------------------------')
 print()
 
 root_folder = os.path.dirname(__file__)
-no_heuristic_stats = load_data(f'{root_folder}/zzz_probabilistic_no_heuristic_deepreactive_statistics.pickle')
-heuristic_stats = load_data(f'{root_folder}/zzz_probabilistic_with_heuristic_deepreactive_statistics.pickle')
+domain_name = sys.argv[1]
 
-plot_learning_curve("Learning Curve - DRP", no_heuristic_stats, heuristic_stats)
+# no_heuristic_drp_stats = load_data(f'{root_folder}/{domain_name}_no_heuristic_deepreactive_probabilistic_statistics.pickle')
+# heuristic_deterministic_drp_stats = load_data(f'{root_folder}/{domain_name}_no_heuristic_deepreactive_deterministic_statistics.pickle')
+# heuristic_probabilistic_drp_stats = load_data(f'{root_folder}/{domain_name}_no_heuristic_deepreactive_probabilistic_statistics.pickle')
 
-time_data = load_time_csv(f'{root_folder}/zzz_deepreactive_time.csv')
-
-plot_time_bars("Experiment time - DRP", time_data)
+no_heuristic_straightline_stats = load_data(f'{root_folder}/{domain_name}_heuristic_straightline_probabilistic_statistics.pickle')
+heuristic_deterministic_straightline_stats = load_data(f'{root_folder}/{domain_name}_no_heuristic_straightline_deterministic_statistics.pickle')
+heuristic_probabilistic_straightline_stats = load_data(f'{root_folder}/{domain_name}_no_heuristic_straightline_probabilistic_statistics.pickle')
