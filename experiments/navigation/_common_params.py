@@ -3,13 +3,17 @@ import optax
 
 from _utils import PlannerParameters
 
-def get_planner_params(plan, jax_seed, drp=False):
+def get_planner_params(plan, jax_seed, drp=False, deterministic=False):
     learning_rate = LEARNING_RATE_STRAIGHTLINE
     if drp:
         learning_rate = LEARNING_RATE_DRP
 
+    batch_size_train = BATCH_SIZE_TRAIN
+    if deterministic:
+        batch_size_train = 1
+
     return PlannerParameters(
-        batch_size_train=256,
+        batch_size_train=batch_size_train,
         plan=plan,
         optimizer=optax.rmsprop,
         learning_rate=learning_rate,
@@ -21,6 +25,7 @@ def get_planner_params(plan, jax_seed, drp=False):
         epsilon_iteration_stop=10,
     )
 
+BATCH_SIZE_TRAIN=256
 LEARNING_RATE_STRAIGHTLINE=0.1
 LEARNING_RATE_DRP=0.001
 NETWORK_TOPOLOGY = [256, 128, 64, 32]

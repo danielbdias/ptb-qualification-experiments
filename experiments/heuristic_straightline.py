@@ -27,7 +27,7 @@ probabilistic_experiment_stats = []
 for jax_seed in JAX_SEEDS:
     # Step 1 - run planner with "deterministic" environment
     deterministic_environment = RDDLEnv.RDDLEnv(domain=deterministic_domain_file, instance=deterministic_instance_file)
-    deterministic_planner_parameters = get_planner_params(plan=JaxStraightLinePlan(), jax_seed=jax_seed)
+    deterministic_planner_parameters = get_planner_params(plan=JaxStraightLinePlan(), jax_seed=jax_seed, deterministic=True)
     deterministic_experiment_summary = run_experiment("Deterministic - Straight line", environment=deterministic_environment, planner_parameters=deterministic_planner_parameters)
     deterministic_experiment_stats.append(deterministic_experiment_summary)
 
