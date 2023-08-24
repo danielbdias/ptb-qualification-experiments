@@ -18,34 +18,26 @@ class PlannerParameters:
     seed:                       jax.random.KeyArray
     report_statistics_interval: int
     action_bounds:              dict
+    epsilon_error:              float
+    epsilon_iteration_stop:     int
 
 @dataclass(frozen=True)
 class ExperimentStatistics:
-    iteration:     int
-    train_return:  float
-    test_return:   float
-    best_return:   float
-    best_params:   dict
-    last_callback: bool
+    iteration:                   int
+    train_return:                float
+    test_return:                 float
+    best_return:                 float
 
     @staticmethod
-    def from_callback(planner_callback, total_epochs):
+    def from_callback(planner_callback):
         iteration = planner_callback['iteration']
 
-        last_callback = (iteration >= total_epochs)
-
         # possible keys: 'iteration', 'train_return', 'test_return', 'best_return', 'params', 'best_params', 'last_iteration_improved', 'grad', 'updates', 'action', 'error', 'invariant', 'precondition', 'pvar', 'reward', 'termination'
-        best_params = dict()
-        if last_callback:
-            best_params = planner_callback['best_params']
-
         return ExperimentStatistics(
             iteration=iteration,
             train_return=planner_callback['train_return'],
             test_return=planner_callback['test_return'],
             best_return=planner_callback['best_return'],
-            best_params=best_params,
-            last_callback=last_callback,
         )
     
     def __str__(self) -> str:
@@ -54,9 +46,10 @@ class ExperimentStatistics:
 
 @dataclass(frozen=True)
 class ExperimentStatisticsSummary:
-    final_policy_weights: dict
-    statistics_history:   list
-    elapsed_time:         float
+    final_policy_weights:        dict
+    statistics_history:          list
+    elapsed_time:                float
+    last_iteration_improved:     int
 
 def run_experiment(name, environment, planner_parameters, silent=True):
     if not silent:
@@ -81,26 +74,29 @@ def run_experiment(name, environment, planner_parameters, silent=True):
     planner_callbacks = planner.optimize(
         planner_parameters.seed, 
         epochs=planner_parameters.epochs, 
-        step=planner_parameters.report_statistics_interval
+        step=planner_parameters.report_statistics_interval,
+        epsilon_error=planner_parameters.epsilon_error,
+        epsilon_iteration_stop=planner_parameters.epsilon_iteration_stop,
     )
 
     final_policy_weights = None
+    last_iteration_improved = None
     statistics_history = []
 
     for callback in planner_callbacks:
-        statistics = ExperimentStatistics.from_callback(callback, total_epochs=(planner_parameters.epochs-1))
+        final_policy_weights = callback['best_params']
+        last_iteration_improved = callback['last_iteration_improved']
+
+        statistics = ExperimentStatistics.from_callback(callback)
         statistics_history.append(statistics)
 
         if not silent:
             print(statistics)
 
-        if statistics.last_callback:
-            final_policy_weights = statistics.best_params
-
     end_time = time.time()
     elapsed_time = end_time - start_time
 
-    return ExperimentStatisticsSummary(final_policy_weights, statistics_history, elapsed_time)
+    return ExperimentStatisticsSummary(final_policy_weights, statistics_history, elapsed_time, last_iteration_improved)
 
 def save_data(data, file_path):
     with open(file_path, 'wb') as handle:

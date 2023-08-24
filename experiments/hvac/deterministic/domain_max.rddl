@@ -50,8 +50,8 @@ domain hvac_vav_fix{
 
     cpfs {
         // Interms
-        temp_outside(?s) = TEMP_OUTSIDE_MEAN(?s);
-        temp_hall(?s) = TEMP_HALL_MEAN(?s);
+        temp_outside(?s) = TEMP_OUTSIDE_MEAN(?s) + 2 * sqrt[TEMP_OUTSIDE_VARIANCE(?s)];
+        temp_hall(?s) = TEMP_HALL_MEAN(?s) + 2 * sqrt[TEMP_HALL_VARIANCE(?s)];
 
         //State
         temp'(?s) = temp(?s) + TIME_DELTA/CAP(?s) * 

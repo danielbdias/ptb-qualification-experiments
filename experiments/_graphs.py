@@ -15,30 +15,52 @@ def get_curves(experiment_summaries, attribute_getter):
     return curves
 
 def stat_curves(experiment_summaries, attribute_getter):
+    iteration_curves = get_curves(experiment_summaries, lambda item : item.iteration)
     curves = get_curves(experiment_summaries, attribute_getter)
 
+    iteration_curve_max_len = -1
+    larger_iteration_curve = None
+
+    # find experiment with more iterations
+    for i in range(len(experiment_summaries)):
+        iteration_curve = iteration_curves[i]
+
+        if len(iteration_curve) > iteration_curve_max_len:
+            iteration_curve_max_len = len(iteration_curve)
+            larger_iteration_curve = iteration_curve
+
+    # repeat last value for each curve with less iterations
+    resized_curves = []
+
+    for i in range(len(experiment_summaries)):
+        curve = curves[i]
+        size_diff = iteration_curve_max_len - len(curve)
+        if size_diff <= 0:
+            resized_curves.append(curve)
+        else:
+            curve_last_value = curve[-1]
+            resized_curve = np.append(curve, np.repeat(curve_last_value, size_diff))
+            resized_curves.append(resized_curve)
+
     # convert "list of np.array" to "np.array of np.array"
-    curves = np.stack(curves)
+    resized_curves = np.stack(resized_curves)
 
-    curves_mean = np.mean(curves, axis=0)
-    curves_stddev = np.std(curves, axis=0)
+    curves_mean = np.mean(resized_curves, axis=0)
+    curves_stddev = np.std(resized_curves, axis=0)
 
-    return curves_mean, curves_stddev
+    return larger_iteration_curve, curves_mean, curves_stddev
     
 
 def plot_cost_curve_per_iteration(title, metric_label, metric_name, planner, no_heuristic_stats, heuristic_stats, cost_getter):
-    iterations_curves = get_curves(no_heuristic_stats, lambda item : item.iteration)
-    iterations = iterations_curves[0] # all curves are the same
-    
-    no_heuristic_best_return_curves_mean, no_heuristic_best_return_curves_stddev = stat_curves(no_heuristic_stats, cost_getter)
-    heuristic_best_return_curves_mean, heuristic_best_return_curves_stddev = stat_curves(heuristic_stats, cost_getter)
+    no_heuristic_iterations, no_heuristic_best_return_curves_mean, no_heuristic_best_return_curves_stddev = stat_curves(no_heuristic_stats, cost_getter)
+    heuristic_iterations, heuristic_best_return_curves_mean, heuristic_best_return_curves_stddev = stat_curves(heuristic_stats, cost_getter)
     
     plt.subplots(1, figsize=(10,10))
-    plt.plot(iterations, no_heuristic_best_return_curves_mean, '--', label=f'No Heuristic ({metric_label})')
-    plt.fill_between(iterations, (no_heuristic_best_return_curves_mean - no_heuristic_best_return_curves_stddev), (no_heuristic_best_return_curves_mean + no_heuristic_best_return_curves_stddev), alpha=0.2)
+    plt.plot(no_heuristic_iterations, no_heuristic_best_return_curves_mean, '--', label=f'No Heuristic ({metric_label})')
+    plt.fill_between(no_heuristic_iterations, (no_heuristic_best_return_curves_mean - no_heuristic_best_return_curves_stddev), (no_heuristic_best_return_curves_mean + no_heuristic_best_return_curves_stddev), alpha=0.2)
 
-    plt.plot(iterations, heuristic_best_return_curves_mean, label=f'Heuristic ({metric_label})')
-    plt.fill_between(iterations, (heuristic_best_return_curves_mean - heuristic_best_return_curves_stddev), (heuristic_best_return_curves_mean + heuristic_best_return_curves_stddev), alpha=0.2)
+    plt.plot(heuristic_iterations, heuristic_best_return_curves_mean, label=f'Heuristic ({metric_label})')
+    plt.fill_between(heuristic_iterations, (heuristic_best_return_curves_mean - heuristic_best_return_curves_stddev), (heuristic_best_return_curves_mean + heuristic_best_return_curves_stddev), alpha=0.2)
 
     plt.title(title)
     plt.xlabel("Iterations"), plt.ylabel("Costs"), plt.legend(loc="best")
@@ -81,10 +103,6 @@ print()
 
 root_folder = os.path.dirname(__file__)
 domain_name = sys.argv[1]
-
-# no_heuristic_drp_stats = load_data(f'{root_folder}/{domain_name}_no_heuristic_deepreactive_probabilistic_statistics.pickle')
-# heuristic_deterministic_drp_stats = load_data(f'{root_folder}/{domain_name}_no_heuristic_deepreactive_deterministic_statistics.pickle')
-# heuristic_probabilistic_drp_stats = load_data(f'{root_folder}/{domain_name}_no_heuristic_deepreactive_probabilistic_statistics.pickle')
 
 no_heuristic_straightline_stats = load_data(f'{root_folder}/_results/{domain_name}_no_heuristic_straightline_probabilistic_statistics.pickle')
 heuristic_probabilistic_straightline_stats = load_data(f'{root_folder}/_results/{domain_name}_heuristic_straightline_probabilistic_statistics.pickle')

@@ -990,7 +990,9 @@ class JaxRDDLBackpropPlanner:
                  model_params: Dict[str, object]=None,
                  policy_hyperparams: Dict[str, object]=None,
                  subs: Dict[str, object]=None,
-                 guess: Dict[str, object]=None) -> Iterable[Dict[str, object]]:
+                 guess: Dict[str, object]=None,
+                 epsilon_error: float=None,
+                 epsilon_iteration_stop: int=1) -> Iterable[Dict[str, object]]:
         ''' Compute an optimal straight-line plan.
         
         :param key: JAX PRNG key
@@ -1024,8 +1026,10 @@ class JaxRDDLBackpropPlanner:
         else:
             policy_params = guess
             opt_state = self.optimizer.init(policy_params)
+
         best_params, best_loss = policy_params, jnp.inf
         last_iter_improve = 0
+        best_loss_history = []
         
         for it in range(epochs):
             
@@ -1058,6 +1062,18 @@ class JaxRDDLBackpropPlanner:
                 self._plot_actions(
                     key, policy_params, policy_hyperparams, test_subs, it)
                 
+            # stop criteria
+            if epsilon_error is not None:
+                best_loss_history.append(best_loss)
+
+                if len(best_loss_history) >= epsilon_iteration_stop:
+                    last_best_losses = best_loss_history[-epsilon_iteration_stop:]
+                    epsilons = [ np.abs(last_best_losses[index] - last_best_losses[index-1]) for index in range(1, len(last_best_losses)) ]
+                    stop_evaluation = list(map(lambda e : e < epsilon_error, epsilons))
+                    
+                    if np.all(stop_evaluation):
+                        return # stop the optimizer
+
             # periodically return a callback
             if it % step == 0 or it == epochs - 1:
                 callback = {
