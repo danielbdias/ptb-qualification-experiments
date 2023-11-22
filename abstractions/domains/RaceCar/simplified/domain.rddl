@@ -1,0 +1,92 @@
+////////////////////////////////////////////////////////////////////
+// A simple continuous MDP for the racecar problem.
+//
+// A car is accelerated by applying a force in the x and y directions. 
+// The goal is to bring the car to within a fixed distance to a fixed 
+// goal location. The car must remain within boundaries defined as 
+// line segments connected between points (X1, Y1) and (X2, Y2).
+//
+////////////////////////////////////////////////////////////////////
+domain racecar {
+	
+    requirements = {
+        reward-deterministic
+    };
+	
+	types {
+		b: object;		// boundary of the race track that cannot be crossed by the car
+	};
+	
+    pvariables {
+		
+		// non-fluents
+		X1(b) 	: { non-fluent, real, default = 0 };	 	// boundary is the line segment (X1, Y1) -> (X2, Y2)
+		Y1(b) 	: { non-fluent, real, default = 0 };	
+		X2(b) 	: { non-fluent, real, default = 1 };
+		Y2(b) 	: { non-fluent, real, default = 1 };
+		
+		X0		: { non-fluent, real, default = 0.01 };		// starting x position of car
+		Y0 		: { non-fluent, real, default = 0.01 };		// starting y position of car
+		
+		GX 			: { non-fluent, real, default = 0.95 };		// x center of goal region
+		GY 			: { non-fluent, real, default = 0.95 };		// y center of goal region
+		RADIUS 		: { non-fluent, real, default = 0.05 };		// radius of goal region
+		COST 		: { non-fluent, real, default = 0.01 };		// cost of fuel, proportional to force	
+		GOAL-REWARD : { non-fluent, real, default = 1.0 };		// reward upon reaching the goal region
+		
+		MAX-F 	: { non-fluent, real, default = 1 };		// maximum force in each direction 
+		MASS 	: { non-fluent, real, default = 1 };		// mass of the car
+		DT	 	: { non-fluent, real, default = 0.1 };		// how much time passes between epochs	
+		
+		// interm and derived fluents
+		ax 				: { interm-fluent, real };			// x acceleration of car
+		ay 				: { interm-fluent, real };			// y acceleration of car
+		dx				: { interm-fluent, real };			// x displacement of car
+		dy				: { interm-fluent, real };			// y displacement of car
+		
+		// states
+       	x    	: { state-fluent, real, default = 0 };      // x position of car
+		y 		: { state-fluent, real, default = 0 };		// y position of car
+		vx		: { state-fluent, real, default = 0 };		// x velocity of car
+		vy		: { state-fluent, real, default = 0 };		// y velocity of car
+		
+       	// actions
+       	fx 		: { action-fluent, real, default = 0 };     // x force component applied to the car
+		fy 		: { action-fluent, real, default = 0 };     // y force component applied to the car
+    };
+
+    cpfs {
+		// compute acceleration and displacement of the car
+		ax = fx / MASS;
+		ay = fy / MASS;
+		dx = vx * DT + ax * pow[DT, 2] / 2;
+		dy = vy * DT + ay * pow[DT, 2] / 2;
+		
+		// compute new position and velocity
+		x' = x + dx;				
+		y' = y + dy;
+		vx' = vx + ax * DT;
+		vy' = vy + ay * DT;		
+    };
+
+    reward = (-COST * sqrt[pow[fx, 2] + pow[fy, 2]]) + 
+				(if(sqrt[pow[x' - GX, 2] + pow[y' - GY, 2]] <= RADIUS)
+					then GOAL-REWARD
+					else 0.0);
+
+	termination {
+		sqrt[pow[x - GX, 2] + pow[y - GY, 2]] <= RADIUS;
+	};
+	
+    state-invariants {
+		RADIUS >= 0 ^ MAX-F >= 0 ^ MASS >= 0 ^ DT >= 0;
+    };
+
+    action-preconditions {
+		fx >= -MAX-F;
+		fx <= MAX-F;
+		fy >= -MAX-F;
+		fy <= MAX-F;
+    };
+
+}

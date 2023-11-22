@@ -221,7 +221,8 @@ class JaxStraightLinePlan(JaxPlan):
                  wrap_non_bool: bool=False,
                  wrap_softmax: bool=False,
                  use_new_projection: bool=True,
-                 max_constraint_iter: int=999) -> None:
+                 max_constraint_iter: int=999,
+                 initializer_per_action: Dict[str, initializers.Initializer]=dict()) -> None:
         '''Creates a new straight line plan in JAX.
         
         :param initializer: a Jax Initializer for setting the initial actions
@@ -244,6 +245,7 @@ class JaxStraightLinePlan(JaxPlan):
         '''
         super(JaxStraightLinePlan, self).__init__()
         self._initializer = initializer
+        self._initializer_per_action = initializer_per_action
         self._wrap_sigmoid = wrap_sigmoid
         self._min_action_prob = min_action_prob
         self._wrap_non_bool = wrap_non_bool
@@ -527,6 +529,7 @@ class JaxStraightLinePlan(JaxPlan):
         # ***********************************************************************
         
         init = self._initializer
+        initializer_per_action = self._initializer_per_action
         stack_bool_params = use_constraint_satisfaction and self._wrap_softmax
         
         def _jax_wrapped_slp_init(key, hyperparams, subs):
@@ -534,15 +537,23 @@ class JaxStraightLinePlan(JaxPlan):
             for (var, shape) in shapes.items():
                 if ranges[var] != 'bool' or not stack_bool_params:                    
                     key, subkey = random.split(key)
-                    param = init(subkey, shape, dtype=compiled.REAL)
+
+                    init_function = init
+                    if var in initializer_per_action.keys():
+                        init_function = initializer_per_action[var]
+
+                    param = init_function(subkey, shape, dtype=compiled.REAL)
+                    
                     if ranges[var] == 'bool':
                         param += bool_threshold
                     params[var] = param
+
             if stack_bool_params:
                 key, subkey = random.split(key)
                 bool_shape = (horizon, bool_action_count)
                 bool_param = init(subkey, bool_shape, dtype=compiled.REAL)
                 params[bool_key] = bool_param
+            
             params, _ = _jax_wrapped_slp_project_to_box(params, hyperparams)
             return params
         

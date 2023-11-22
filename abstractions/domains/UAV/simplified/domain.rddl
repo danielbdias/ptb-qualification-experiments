@@ -61,34 +61,19 @@ pvariables {
 };
 
 cpfs {
-
     // position changes for each time step
-    pos-x'(?a) = if (CONTROLLABLE(?a))
-                 then pos-x(?a) + SCALE-FACTOR * vel(?a) * cos[psi(?a)]
-                 else pos-x(?a) + Normal(0.0, RANDOM-WALK-COEFF);
-    pos-y'(?a) = if (CONTROLLABLE(?a))
-                 then pos-y(?a) + SCALE-FACTOR * vel(?a) * sin[psi(?a)]
-                 else pos-y(?a) + Normal(0.0, RANDOM-WALK-COEFF);
-    pos-z'(?a) = if (CONTROLLABLE(?a))
-                 then pos-z(?a) + SCALE-FACTOR * vel(?a) * sin[theta(?a)]
-                 else pos-z(?a) + Normal(0.0, RANDOM-WALK-COEFF);
+    pos-x'(?a) = SCALE-FACTOR * vel(?a) * cos[psi(?a)];
+    pos-y'(?a) = pos-y(?a) + SCALE-FACTOR * vel(?a) * sin[psi(?a)];
+    pos-z'(?a) = pos-z(?a) + SCALE-FACTOR * vel(?a) * sin[theta(?a)];
 
     // velocity
-    vel'(?a) = if (CONTROLLABLE(?a))
-               then max[0, vel(?a) + SCALE-FACTOR * max[min[set-acc(?a), MAX-ACC(?a)], MIN-ACC(?a)]]
-               else max[0, vel(?a) + Normal(0.0, RANDOM-WALK-COEFF)];
+    vel'(?a) = max[0, vel(?a) + SCALE-FACTOR * max[min[set-acc(?a), MAX-ACC(?a)], MIN-ACC(?a)]];
 
     // angle changes
-    phi'(?a) = if (CONTROLLABLE(?a))
-               then phi(?a) + SCALE-FACTOR * max[min[set-phi(?a), MAX-DELTA-PHI(?a)], MIN-DELTA-PHI(?a)]
-               else phi(?a) + Normal(0.0, RANDOM-WALK-COEFF);
-    theta'(?a) = if (CONTROLLABLE(?a))
-                 then theta(?a) + SCALE-FACTOR * max[min[set-theta(?a), MAX-DELTA-THETA(?a)], MIN-DELTA-THETA(?a)]
-                 else theta(?a) + Normal(0.0, RANDOM-WALK-COEFF);
-    psi'(?a) = if (CONTROLLABLE(?a))
-               then psi(?a) + SCALE-FACTOR * (tan[phi(?a)] / (vel(?a)+VEL-REG)) * GRAVITY
-               else psi(?a) + Normal(0.0, RANDOM-WALK-COEFF);
+    phi'(?a) = phi(?a) + SCALE-FACTOR * max[min[set-phi(?a), MAX-DELTA-PHI(?a)], MIN-DELTA-PHI(?a)];
 
+    theta'(?a) = theta(?a) + SCALE-FACTOR * max[min[set-theta(?a), MAX-DELTA-THETA(?a)], MIN-DELTA-THETA(?a)];
+    psi'(?a) = psi(?a) + SCALE-FACTOR * (tan[phi(?a)] / (vel(?a)+VEL-REG)) * GRAVITY;
 };
 
 reward = -sum_{?a : aircraft} [CONTROLLABLE(?a) * [sqrt[pow[(pos-x(?a) - GOAL-X(?a)),2] +
