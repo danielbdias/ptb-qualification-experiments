@@ -78,14 +78,7 @@ domain hvac{
 	};
 
 	reward = -(sum_{?h : heater}[HEAT-COST(?h) * pow[heat-input(?h), 2]])
-	         - AIR-COST * (sum_{?z : zone}[pow[fan-in(?z), 2]])
-			 - ZONE-DISCOMFORT-PENALTY * (sum_{?z1 : zone}[ 
-				if (occupied(?z1) ^ (temp-zone(?z1) < TEMP-ZONE-MIN))
-				   then pow[temp-zone(?z1) - TEMP-ZONE-MIN, 2]
-				else if (occupied(?z1) ^ (temp-zone(?z1) > TEMP-ZONE-MAX))
-				   then pow[temp-zone(?z1) - TEMP-ZONE-MAX, 2]
-				else 0.0]);
-			 //- ZONE-DISCOMFORT-PENALTY * (sum_{?z1 : zone}[ (temp-zone(?z1) < TEMP-ZONE-MIN) | (temp-zone(?z1) > TEMP-ZONE-MAX)]);
+	         - AIR-COST * (sum_{?z : zone}[pow[fan-in(?z), 2]]);
 
 
 	action-preconditions {

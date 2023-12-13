@@ -7,7 +7,7 @@ from pyRDDLGym.Core.Parser.RDDLReader import RDDLReader
 from pyRDDLGym.Core.Parser.parser import RDDLParser
 
 # Read the domain and instance files
-domain, instance = 'Reservoir_continuous', '0'
+domain, instance = 'HVAC', '0'
 env_info = ExampleManager.GetEnvInfo(domain)
 domain = env_info.get_domain()
 instance = env_info.get_instance(instance)
