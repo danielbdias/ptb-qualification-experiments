@@ -11,12 +11,11 @@ from _utils import run_experiment, save_data, PlannerParameters
 
 root_folder = os.path.dirname(__file__)
 
-# jax_seeds = [42, 967, 61, 647, 347, 139, 367, 13, 971, 31]
-jax_seeds = [42, 967, 61, 647]
+jax_seeds = [42, 967, 61, 647, 347, 139, 367, 13, 971, 31]
 
-domain = 'UAV'
+domain = 'HVAC'
 instance = 'instance1'
-action_bounds={'set-acc': (-1, 1), 'set-phi': (-1, 1), 'set-theta': (-1, 1)}
+action_bounds = {'fan-in': (0.05001, None), 'heat-input': (0.0, None)}
 
 # domain = 'RaceCar'
 # instance = 'instance0'
