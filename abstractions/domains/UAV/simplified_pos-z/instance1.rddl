@@ -2,7 +2,7 @@ non-fluents nf_simple_UAV_p0{
 	domain = kinematic_UAVs_con;
 
 	objects {
-		aircraft : {a1};
+		aircraft : {a1, a2, a3};
 	};
 
 	non-fluents {
@@ -34,7 +34,7 @@ non-fluents nf_simple_UAV_p0{
 	};
 }
 
-instance simple_UAV_cont_0 {
+instance simple_UAV_cont_1 {
 	domain = kinematic_UAVs_con;
 	non-fluents = nf_simple_UAV_p0;
 	
@@ -42,16 +42,19 @@ instance simple_UAV_cont_0 {
 	    pos-x(a1) = 0.0;
         pos-y(a1) = 0.0;
         pos-z(a1) = 0.0;
+
+
         vel(a1) = 0.1;
 
         psi(a1) = 0.0;
         phi(a1) = 0.0;
         theta(a1) = 0.0;
 
+
  	};
 
 	max-nondef-actions = pos-inf;
-	horizon  = 300;
+	horizon  = 20;
 	discount = 1.0;
 
 }

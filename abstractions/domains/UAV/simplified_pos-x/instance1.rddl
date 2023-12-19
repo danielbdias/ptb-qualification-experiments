@@ -2,7 +2,7 @@ non-fluents nf_simple_UAV_p0{
 	domain = kinematic_UAVs_con;
 
 	objects {
-		aircraft : {a1};
+		aircraft : {a1, a2, a3};
 	};
 
 	non-fluents {
