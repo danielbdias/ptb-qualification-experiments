@@ -1,52 +1,15 @@
 import os
 import jax
-import optax
-import time
 
-from dataclasses import dataclass
+import time
 
 from pyRDDLGym import RDDLEnv
 from pyRDDLGym.Core.Jax.JaxRDDLBackpropPlanner import JaxStraightLinePlan
 
+from _domains import domains, jax_seeds, silent, experiment_params
 from _utils import run_experiment, save_data, PlannerParameters
 
-@dataclass(frozen=True)
-class DomainExperiment:
-    name:              str
-    instance:          str
-    action_bounds:     dict
-    variables_removed: list
-
 root_folder = os.path.dirname(__file__)
-
-jax_seeds = [42, 967, 61, 647, 347, 139, 367, 13, 971, 31]
-
-silent = False
-
-domains = [
-    DomainExperiment(
-        name='HVAC',
-        instance='instance1',
-        action_bounds={'fan-in': (0.05001, None), 'heat-input': (0.0, None)},
-        variables_removed=['occupied', 'tempzone']
-    ),
-    DomainExperiment(
-        name='UAV',
-        instance='instance1',
-        action_bounds={'set-acc': (-1, 1), 'set-phi': (-1, 1), 'set-theta': (-1, 1)},
-        variables_removed=['pos-x', 'pos-y', 'pos-z']
-    )
-]
-
-experiment_params = {
-    'batch_size_train': 256,
-    'optimizer': optax.rmsprop,
-    'learning_rate': 0.1,
-    'epochs': 1000,
-    'report_statistics_interval': 1,
-    'epsilon_error': 0.001,
-    'epsilon_iteration_stop': 10,
-}
 
 start_time = time.time()
 
@@ -55,6 +18,12 @@ start_time = time.time()
 #########################################################################################################
 
 for domain in domains:
+    if not silent:
+        print('--------------------------------------------------------------------------------')
+        print('Domain: ', domain)
+        print('--------------------------------------------------------------------------------')
+        print()
+
     regular_environment = RDDLEnv.RDDLEnv(domain=f'{root_folder}/domains/{domain.name}/regular/domain.rddl', instance=f'{root_folder}/domains/{domain.name}/regular/{domain.instance}.rddl')
     regular_env_experiment_stats = []
 
