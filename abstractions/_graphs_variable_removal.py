@@ -13,8 +13,8 @@ def write_statistic_header(file_path):
         writer.writerow(['Domain', 'State fluent', 'Mean (Base)', 'Mean (Fluent)', 'Variance', 'Range'])
 
 def write_statistic_line(domain, variable, base_statistics, fluent_statistics, file_path):
-    best_returns_base_statistics = list(map(lambda item : item.statistics_history[-1], base_statistics))
-    best_returns_fluent_statistics = list(map(lambda item : item.statistics_history[-1], fluent_statistics))
+    best_returns_base_statistics = list(map(lambda item : item.statistics_history[-1].best_return, base_statistics))
+    best_returns_fluent_statistics = list(map(lambda item : item.statistics_history[-1].best_return, fluent_statistics))
 
     best_returns_base_statistics_mean = np.mean(best_returns_base_statistics)
     best_returns_fluent_statistics_mean = np.mean(best_returns_fluent_statistics)
@@ -54,6 +54,6 @@ for domain in domains:
 
     for fluent in variables_removed:
         fluent_statistics = statistics[f'Simplified without {fluent}']
-        write_statistic_line(domain, fluent, base_statistics, fluent_statistics)
+        write_statistic_line(domain.name, fluent, base_statistics, fluent_statistics, statistic_file)
 
 print('done!')

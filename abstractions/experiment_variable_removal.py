@@ -18,11 +18,10 @@ start_time = time.time()
 #########################################################################################################
 
 for domain in domains:
-    if not silent:
-        print('--------------------------------------------------------------------------------')
-        print('Domain: ', domain)
-        print('--------------------------------------------------------------------------------')
-        print()
+    print('--------------------------------------------------------------------------------')
+    print('Domain: ', domain)
+    print('--------------------------------------------------------------------------------')
+    print()
 
     regular_environment = RDDLEnv.RDDLEnv(domain=f'{root_folder}/domains/{domain.name}/regular/domain.rddl', instance=f'{root_folder}/domains/{domain.name}/regular/{domain.instance}.rddl')
     regular_env_experiment_stats = []
