@@ -9,7 +9,9 @@ class DomainExperiment:
     variables_removed: list
 
 jax_seeds = [
-    42, 101, 967, 103, 61, 107, 647, 109, 347, 113, 139, 127, 367, 131, 13, 137, 971, 139, 31, 149
+    42, 101, 967, 103, 61, 
+    107, 647, 109, 347, 113, 
+    #139, 127, 367, 131, 13, 137, 971, 139, 31, 149
 ]
 
 domains = [
@@ -17,7 +19,7 @@ domains = [
         name='HVAC',
         instance='instance1',
         action_bounds={'fan-in': (0.05001, None), 'heat-input': (0.0, None)},
-        variables_removed=['occupied', 'tempzone']
+        variables_removed=['occupied_false', 'occupied_true', 'tempzone']
     ),
     DomainExperiment(
         name='UAV',

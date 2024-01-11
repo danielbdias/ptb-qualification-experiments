@@ -11,6 +11,8 @@ non-fluents nf_simple_UAV_p0{
         MAX-X = 500000.0;
         MIN-Y = -500000.0;
         MAX-Y = 500000.0;
+        MIN-Z = -50000.0;
+        MAX-Z = 50000.0;
 
         GRAVITY = 9.8;
 
@@ -26,6 +28,7 @@ non-fluents nf_simple_UAV_p0{
 
         GOAL-X(a1) = 50.0;
         GOAL-Y(a1) = 50.0;
+        GOAL-Z(a1) = 50.0;
 
         CONTROLLABLE(a1);
 	};
@@ -36,14 +39,18 @@ instance simple_UAV_cont_1 {
 	non-fluents = nf_simple_UAV_p0;
 	
 	init-state {
-                pos-x(a1) = 0.0;
-                pos-y(a1) = 0.0;
+	    pos-x(a1) = 0.0;
+        pos-y(a1) = 0.0;
+        pos-z(a1) = 0.0;
 
-                vel(a1) = 0.1;
 
-                psi(a1) = 0.0;
-                phi(a1) = 0.0;
-                theta(a1) = 0.0;
+        vel(a1) = 0.1;
+
+        psi(a1) = 0.0;
+        phi(a1) = 0.0;
+        theta(a1) = 0.0;
+
+
  	};
 
 	max-nondef-actions = pos-inf;

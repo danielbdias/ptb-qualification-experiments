@@ -45,7 +45,7 @@ pvariables {
     // Cartesian Coordinates
     pos-x(aircraft) : { state-fluent, real, default = 0.0 }; // X axis coordinate
     pos-y(aircraft) : { state-fluent, real, default = 0.0 }; // Y axis coordinate
-
+    pos-z(aircraft) : { state-fluent, real, default = 0.0 }; // Z axis coordinate
     // Angles
     theta(aircraft) : { state-fluent, real, default = 0.0 };  // pitch
     phi(aircraft) : { state-fluent, real, default = 0.0 };    // roll
@@ -69,6 +69,9 @@ cpfs {
     pos-y'(?a) = if (CONTROLLABLE(?a))
                  then pos-y(?a) + SCALE-FACTOR * vel(?a) * sin[psi(?a)]
                  else pos-y(?a) + Normal(0.0, RANDOM-WALK-COEFF);
+    pos-z'(?a) = if (CONTROLLABLE(?a))
+                 then pos-z(?a) + SCALE-FACTOR * vel(?a) * sin[theta(?a)]
+                 else pos-z(?a) + Normal(0.0, RANDOM-WALK-COEFF);
 
     // velocity
     vel'(?a) = if (CONTROLLABLE(?a))
@@ -88,8 +91,7 @@ cpfs {
 
 };
 
-reward = -sum_{?a : aircraft} [CONTROLLABLE(?a) * [sqrt[pow[(pos-x(?a) - GOAL-X(?a)),2] +
-                                   pow[(pos-y(?a) - GOAL-Y(?a)),2] ]] ];
+reward = -sum_{?a : aircraft} [CONTROLLABLE(?a) * [sqrt[pow[(pos-x(?a) - GOAL-X(?a)),2] + pow[(pos-y(?a) - GOAL-Y(?a)),2]]]];
 
 
 state-invariants {
@@ -98,6 +100,8 @@ state-invariants {
     forall_{?a : aircraft}[ pos-x(?a) >= MIN-X ];
     forall_{?a : aircraft}[ pos-y(?a) <= MAX-Y ];
     forall_{?a : aircraft}[ pos-y(?a) >= MIN-Y ];
+    forall_{?a : aircraft}[ pos-z(?a) <= MAX-Z ];
+    forall_{?a : aircraft}[ pos-z(?a) >= MIN-Z ];
 	
 	// physics are plausible
 	GRAVITY >= 0 ^ SCALE-FACTOR >= 0 ^ RANDOM-WALK-COEFF >= 0 ^ VEL-REG >= 0;
