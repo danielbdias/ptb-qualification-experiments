@@ -39,14 +39,14 @@ def run_planner_experiment(domain, bound_name, experiment_name):
 #########################################################################################################
 # Runs with simplified domains
 #########################################################################################################
-    
+
+print('--------------------------------------------------------------------------------')
+
 for domain in domains:
-    print('--------------------------------------------------------------------------------')
-    print('Domain: ', domain)
-    print('--------------------------------------------------------------------------------')
-    print()
-    
     for state_fluent in domain.state_fluents:
+        
+        print(f'Domain: {domain.name} State Fluent: {state_fluent}')
+        
         lower_bound_experiment_name = f"{domain.name} ({state_fluent} lower bound) - Straight line"
 
         lower_bound_experiment_stats = run_planner_experiment(domain, 'lower-bound', lower_bound_experiment_name)
@@ -60,6 +60,8 @@ for domain in domains:
 end_time = time.time()
 elapsed_time = end_time - start_time
 
+print('--------------------------------------------------------------------------------')
+print()
 print('--------------------------------------------------------------------------------')
 print('Elapsed Time: ', elapsed_time)
 print('--------------------------------------------------------------------------------')

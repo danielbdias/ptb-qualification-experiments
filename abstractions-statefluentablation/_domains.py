@@ -28,12 +28,12 @@ domains = [
         action_bounds={'set-acc': (-1, 1), 'set-phi': (-1, 1), 'set-theta': (-1, 1)},
         state_fluents=['phi', 'pos-x', 'pos-y', 'pos-z', 'psi', 'theta', 'vel']
     ),
-    DomainExperiment(
-        name='MarsRover',
-        instance='instance0',
-        action_bounds={'power-x': (-0.0999, 0.0999), 'power-y': (-0.0999, 0.0999)},
-        state_fluents=['mineral-harvested', 'pos-x', 'pos-y', 'vel-x', 'vel-y']
-    )
+#     DomainExperiment(
+#         name='MarsRover',
+#         instance='instance0',
+#         action_bounds={'power-x': (-0.0999, 0.0999), 'power-y': (-0.0999, 0.0999)},
+#         state_fluents=['mineral-harvested', 'pos-x', 'pos-y', 'vel-x', 'vel-y']
+#     )
 ]
 
 silent = True
