@@ -51,7 +51,7 @@ domain hvac{
 		// derived air temperature before each heater
 		temp-1(?h) = if ((sum_{?z : zone}[ADJ-HEATER(?h, ?z)]) > 0)
 		             // then 1/(sum_{?z : zone}[ADJ-HEATER(?h, ?z)]) * (sum_{?z : zone}[ (temp-zone(?z) + (TEMP-OUT - temp-zone(?z)*OUT-AIR-FLOW/fan-in(?z)))*ADJ-HEATER(?h, ?z) ])
-					 then 1/(sum_{?z : zone}[ADJ-HEATER(?h, ?z)]) * (sum_{?z : zone}[ (30.0 + (TEMP-OUT - 30.0*OUT-AIR-FLOW/fan-in(?z)))*ADJ-HEATER(?h, ?z) ])
+					 then 1/(sum_{?z : zone}[ADJ-HEATER(?h, ?z)]) * (sum_{?z : zone}[ (50.0 + (TEMP-OUT - 50.0*OUT-AIR-FLOW/fan-in(?z)))*ADJ-HEATER(?h, ?z) ])
 		             else 0;
 
 		// heater's new output air temperature

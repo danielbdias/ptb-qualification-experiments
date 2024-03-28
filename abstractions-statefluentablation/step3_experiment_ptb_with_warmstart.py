@@ -14,7 +14,7 @@ from _utils import run_experiment, save_data, PlannerParameters
 root_folder = os.path.dirname(__file__)
 
 print('--------------------------------------------------------------------------------')
-print('Experiment Part 3 - Running with Cold Start')
+print('Experiment Part 3 - Running with Warm Start')
 print('--------------------------------------------------------------------------------')
 print()
 
@@ -75,12 +75,12 @@ for domain in domains:
         experiment_params['seed'] = jax.random.PRNGKey(jax_seed)
         experiment_params['action_bounds'] = domain.action_bounds
 
-        cold_start_env_params = PlannerParameters(**experiment_params)
+        warm_start_env_params = PlannerParameters(**experiment_params)
 
-        cold_start_env_experiment_summary = run_experiment(f"{domain.name} (cold start) - Straight line", environment=regular_environment, planner_parameters=cold_start_env_params, silent=silent)
-        env_experiment_stats.append(cold_start_env_experiment_summary)
+        warm_start_env_experiment_summary = run_experiment(f"{domain.name} (warm start) - Straight line", environment=regular_environment, planner_parameters=warm_start_env_params, silent=silent)
+        env_experiment_stats.append(warm_start_env_experiment_summary)
 
-    save_data(env_experiment_stats, f'{root_folder}/_results/{domain.name}_coldstart_statistics.pickle')
+    save_data(env_experiment_stats, f'{root_folder}/_results/{domain.name}_warmstart_statistics.pickle')
 
 end_time = time.time()
 elapsed_time = end_time - start_time

@@ -22,12 +22,12 @@ domains = [
         action_bounds={'fan-in': (0.05001, None), 'heat-input': (0.0, None)},
         state_fluents=['occupied', 'temp-heater', 'temp-zone']
     ),
-    DomainExperiment(
-        name='UAV',
-        instance='instance1',
-        action_bounds={'set-acc': (-1, 1), 'set-phi': (-1, 1), 'set-theta': (-1, 1)},
-        state_fluents=['phi', 'pos-x', 'pos-y', 'pos-z', 'psi', 'theta', 'vel']
-    ),
+    # DomainExperiment(
+    #     name='UAV',
+    #     instance='instance1',
+    #     action_bounds={'set-acc': (-1, 1), 'set-phi': (-1, 1), 'set-theta': (-1, 1)},
+    #     state_fluents=['phi', 'pos-x', 'pos-y', 'pos-z', 'psi', 'theta', 'vel']
+    # ),
 #     DomainExperiment(
 #         name='MarsRover',
 #         instance='instance0',

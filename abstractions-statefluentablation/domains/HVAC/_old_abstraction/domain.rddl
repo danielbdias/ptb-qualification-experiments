@@ -3,7 +3,7 @@
 // added an occupancy to enforce learning an efficient policy
 
 // abstraction without tempzone
-// occupied(z1) = true and occupied(z2) = true
+// temp-zone(z1) = 5 and temp-zone(z2) = 1
 // TODO: remove this state fluent somewhow from this definition
 
 domain hvac{
@@ -40,6 +40,7 @@ domain hvac{
 		// states
 		temp-zone(zone) : { state-fluent, real, default = 1 };
 		temp-heater(heater) : { state-fluent, real, default = 1 };
+		occupied(zone)      : { state-fluent, bool, default = true };
 
 		// actions
 		fan-in(zone) : {action-fluent, real, default = 1 };
@@ -48,6 +49,10 @@ domain hvac{
 	};
 
 	cpfs {
+	
+		// occupation switch: simplified to allow people to leave premises gradually (e.g. end of workday)
+		occupied'(?z) = occupied(?z) ^ Bernoulli(1.0 - P-SWITCH(?z));
+
 		// derived air temperature before each heater
 		temp-1(?h) = if ((sum_{?z : zone}[ADJ-HEATER(?h, ?z)]) > 0)
 		             then 1/(sum_{?z : zone}[ADJ-HEATER(?h, ?z)]) * (sum_{?z : zone}[ (temp-zone(?z) + (TEMP-OUT - temp-zone(?z)*OUT-AIR-FLOW/fan-in(?z)))*ADJ-HEATER(?h, ?z) ])
@@ -64,25 +69,16 @@ domain hvac{
 					         + DELTA-T / (K * HEATER-VOL(?h)) * heat-input(?h);
 
 		// zone's new inner temperature
-		temp-zone'(?z) =
-		                - K-dz * pow[temp-zone(?z) - TEMP-OUT, 2] +
-    		            if ((sum_{?h : heater}[ADJ-HEATER(?h, ?z)]) > 0)
-    		            then temp-zone(?z)
-    		                 + DELTA-T / (ZONE-VOL(?z) * (sum_{?h : heater}[ADJ-HEATER(?h, ?z)])) * fan-in(?z) * (sum_{?h : heater}[(temp-heater(?h) - temp-zone(?z)) * ADJ-HEATER(?h, ?z)])
-    		                 + DELTA-T * (sum_{?z2 : zone} [ ZONE-VOL(?z2)/ZONE-VOL(?z)*SIGMA(?z) * (temp-zone(?z2) - temp-zone(?z)) *
-							 (ADJ-ZONES(?z, ?z2) | ADJ-ZONES(?z2, ?z))])
-						else temp-zone(?z)
-						     + DELTA-T * (sum_{?z2 : zone} [ ZONE-VOL(?z2)/ZONE-VOL(?z)*SIGMA(?z) * (temp-zone(?z2) - temp-zone(?z)) *
-							 (ADJ-ZONES(?z, ?z2) | ADJ-ZONES(?z2, ?z))]);
+		temp-zone'(?z) = temp-zone(?z);
 
 	};
 
 	reward = -(sum_{?h : heater}[HEAT-COST(?h) * pow[heat-input(?h), 2]])
 	         - AIR-COST * (sum_{?z : zone}[pow[fan-in(?z), 2]])
 			 - ZONE-DISCOMFORT-PENALTY * (sum_{?z1 : zone}[ 
-				if (temp-zone(?z1) < TEMP-ZONE-MIN)
+				if (occupied(?z1) ^ (temp-zone(?z1) < TEMP-ZONE-MIN))
 				   then pow[temp-zone(?z1) - TEMP-ZONE-MIN, 2]
-				else if (temp-zone(?z1) > TEMP-ZONE-MAX)
+				else if (occupied(?z1) ^ (temp-zone(?z1) > TEMP-ZONE-MAX))
 				   then pow[temp-zone(?z1) - TEMP-ZONE-MAX, 2]
 				else 0.0]);
 

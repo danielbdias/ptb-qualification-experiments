@@ -58,7 +58,7 @@ domain hvac{
     		            if ((sum_{?h : heater}[ADJ-HEATER(?h, ?z)]) > 0)
     		            then temp-zone(?z)
     		                 // + DELTA-T / (ZONE-VOL(?z) * (sum_{?h : heater}[ADJ-HEATER(?h, ?z)])) * fan-in(?z) * (sum_{?h : heater}[(temp-heater(?h) - temp-zone(?z)) * ADJ-HEATER(?h, ?z)])
-							 + DELTA-T / (ZONE-VOL(?z) * (sum_{?h : heater}[ADJ-HEATER(?h, ?z)])) * fan-in(?z) * (sum_{?h : heater}[(-5.0 - temp-zone(?z)) * ADJ-HEATER(?h, ?z)])
+							 + DELTA-T / (ZONE-VOL(?z) * (sum_{?h : heater}[ADJ-HEATER(?h, ?z)])) * fan-in(?z) * (sum_{?h : heater}[(-25.0 - temp-zone(?z)) * ADJ-HEATER(?h, ?z)])
     		                 + DELTA-T * (sum_{?z2 : zone} [ ZONE-VOL(?z2)/ZONE-VOL(?z)*SIGMA(?z) * (temp-zone(?z2) - temp-zone(?z)) *
 							 (ADJ-ZONES(?z, ?z2) | ADJ-ZONES(?z2, ?z))])
 						else temp-zone(?z)
