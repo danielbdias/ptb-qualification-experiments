@@ -20,6 +20,7 @@ class PlannerParameters:
     action_bounds:              dict
     epsilon_error:              float
     epsilon_iteration_stop:     int
+    policy_hyperparams:         dict
 
 @dataclass(frozen=True)
 class ExperimentStatistics:
@@ -77,6 +78,7 @@ def run_experiment(name, environment, planner_parameters, silent=True):
         step=planner_parameters.report_statistics_interval,
         epsilon_error=planner_parameters.epsilon_error,
         epsilon_iteration_stop=planner_parameters.epsilon_iteration_stop,
+        policy_hyperparams=planner_parameters.policy_hyperparams
     )
 
     final_policy_weights = None

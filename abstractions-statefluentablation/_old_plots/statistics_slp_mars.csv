@@ -1,0 +1,6 @@
+Domain;State fluent;Mean (upper);Mean (lower);Mean (DiffMax);DiffMax list
+MarsRover;mineral-harvested;279.7067;-0.2431544;279.94986;279.94986
+MarsRover;pos-x;-0.25515574;6.5485783;6.803734;6.803734
+MarsRover;pos-y;-0.24214515;6.6104536;6.8525987;6.8525987
+MarsRover;vel-x;4.7337193;1.7481741;2.9855452;2.9855452
+MarsRover;vel-y;4.743434;1.728755;3.014679;3.014679

@@ -28,6 +28,7 @@ def run_planner_experiment(domain, bound_name, experiment_name):
         experiment_params['plan'] = JaxStraightLinePlan()
         experiment_params['seed'] = jax.random.PRNGKey(jax_seed)
         experiment_params['action_bounds'] = domain.action_bounds
+        experiment_params['policy_hyperparams'] = domain.policy_hyperparams
 
         env_params = PlannerParameters(**experiment_params)
 
