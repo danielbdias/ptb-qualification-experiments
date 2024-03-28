@@ -15,5 +15,5 @@ pip install ./pyRDDLGym
 
 # Run script
 ```sh
-PYTHONWARNINGS=ignore python ./experiments/heuristic.py
+PYTHONWARNINGS=ignore python ./experiment_file_.py
 ``````
