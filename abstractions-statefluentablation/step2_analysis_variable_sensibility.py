@@ -61,7 +61,7 @@ for domain in domains:
         statistics[f'Abstraction ({state_fluent} lower bound)'] = load_data(f'{root_folder}/_results/{domain_name}_abstraction_{state_fluent}_lower_bound_statistics.pickle')
         statistics[f'Abstraction ({state_fluent} upper bound)'] = load_data(f'{root_folder}/_results/{domain_name}_abstraction_{state_fluent}_upper_bound_statistics.pickle')
 
-    graph_path = f'{root_folder}/_plots/{domain_name}_slp.pdf'
+    graph_path = f'{root_folder}/_plots/{domain_name}_slp_curves.pdf'
     plot_cost_curve_per_iteration(f'Best Costs per Iteration ({domain_name})', statistics, lambda item : -item.best_return, graph_path)
 
     for state_fluent in state_fluents:
