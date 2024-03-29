@@ -65,7 +65,7 @@ domain mars_rover_science_mission {
         // vel-x'(?d) = vel-x(?d) + SCALE-FACTOR * u-x(?d);
         vel-y'(?d) = vel-y(?d) + SCALE-FACTOR * u-y(?d);
         // pos-x'(?d) = pos-x(?d) + SCALE-FACTOR * vel-x(?d);
-        pos-x'(?d) = pos-x(?d) + SCALE-FACTOR * -10.0;
+        pos-x'(?d) = pos-x(?d) + SCALE-FACTOR * -100.0;
         pos-y'(?d) = pos-y(?d) + SCALE-FACTOR * vel-y(?d);
 
         mineral-harvested'(?m) = mineral-harvested(?m) |
